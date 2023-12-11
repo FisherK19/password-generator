@@ -12,63 +12,58 @@ let verifyNumericCharacter;
 let verifyUpperCase;
 let verifyLowerCase;
 
-// function will provide user with how many characters they would like to use in password
 function generatePassword() {
-  let passwordLengthPrompt = (prompt("How many characters would you like your password to contain?"));
+  let passwordLengthPrompt;
 
-  // Alerts if password length is wrong
-  while(passwordLengthPrompt <= 8 || passwordLengthPrompt >= 128) {
-      alert("Password length must be between 8-128 characters");
-      let passwordLengthPrompt = (prompt("How many characters would you like your password to contain?"));
-      } 
+  // Get valid password length from the user
+  do {
+    passwordLengthPrompt = prompt("How many characters would you like your password to contain?");
+  } while (passwordLengthPrompt < 8 || passwordLengthPrompt > 128);
 
-      // Alerts again to verify length  
-      alert(`Your password will have ${passwordLengthPrompt} characters`);
+  // Alerts again to verify length
+  alert(`Your password will have ${passwordLengthPrompt} characters`);
 
-    // click ok to determine what will be in password
-    let confirmSpecialCharacter = confirm("Would like to include special characters");
-    let confirmNumericCharacter = confirm("Would like to include numeric characters");    
-    let confirmLowerCase = confirm("Would like to include lowercase characters");
-    let confirmUpperCase = confirm("Would like to include uppercase characters");
-      // Alerts to choose one of the variables 
-      while(confirmUpperCase === false && confirmLowerCase === false && confirmSpecialCharacter === false && confirmNumericCharacter === false) {
-        alert("You must choose at least an upper,lower,specialchar or number");
-        let confirmSpecialCharacter = confirm("Would like to include special characters");
-        let confirmNumericCharacter = confirm("Would like to include numeric characters");    
-        let confirmLowerCase = confirm("Would like to include lowercase characters");
-        let confirmUpperCase = confirm("Would like to include uppercase characters");   
-    } 
+  // Get user preferences for character types
+  let confirmSpecialCharacter = confirm("Would you like to include special characters");
+  let confirmNumericCharacter = confirm("Would you like to include numeric characters");
+  let confirmLowerCase = confirm("Would you like to include lowercase characters");
+  let confirmUpperCase = confirm("Would you like to include uppercase characters");
 
-      // section using Array instances no string outputs a message to the console
-      let passwordCharacters = []
-      
-    if (confirmSpecialCharacter) {
-      passwordCharacters = passwordCharacters.concat(specialChar)
-    }
+  // Ensure the user selects at least one character type
+  while (!confirmUpperCase && !confirmLowerCase && !confirmSpecialCharacter && !confirmNumericCharacter) {
+    alert("You must choose at least an upper, lower, special char, or number");
+    confirmSpecialCharacter = confirm("Would you like to include special characters");
+    confirmNumericCharacter = confirm("Would you like to include numeric characters");
+    confirmLowerCase = confirm("Would you like to include lowercase characters");
+    confirmUpperCase = confirm("Would you like to include uppercase characters");
+  }
 
-    if (confirmNumericCharacter) {
-      passwordCharacters = passwordCharacters.concat(numeric)
-    }
-      
-    if (confirmLowerCase) {
-      passwordCharacters = passwordCharacters.concat(Lowercase)
-    }
+  // Combine selected character types
+  let passwordCharacters = "";
 
-    if (confirmUpperCase) {
-      passwordCharacters = passwordCharacters.concat(Uppercase)
-    }
+  if (confirmSpecialCharacter) {
+    passwordCharacters += specialChar;
+  }
 
-      console.log(passwordCharacters)
+  if (confirmNumericCharacter) {
+    passwordCharacters += numeric;
+  }
 
-    //For loop to get a random character from the selection variable and the create a new variable called
-    //randomChartacter. that randomcharacter variable is then added to the password variable and is returned to the user.
-      let randomPassword = ""
-      
-      for (let i = 0; i < passwordLengthPrompt; i++) {
-        randomPassword = randomPassword + passwordCharacters[Math.floor(Math.random() * passwordCharacters.length)];
-        console.log(randomPassword)
-      }
-      return randomPassword;
+  if (confirmLowerCase) {
+    passwordCharacters += Lowercase;
+  }
+
+  if (confirmUpperCase) {
+    passwordCharacters += Uppercase;
+  }
+
+  // Generate the password
+  let randomPassword = "";
+  for (let i = 0; i < passwordLengthPrompt; i++) {
+    randomPassword += passwordCharacters[Math.floor(Math.random() * passwordCharacters.length)];
+  }
+
+  return randomPassword;
 }
 
 // Write password to the #password input
